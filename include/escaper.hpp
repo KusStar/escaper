@@ -82,10 +82,10 @@ namespace escaper {
     namespace cursor {
         static const string left = CSI + "G";
 
-        string up(const int &count = 1) { return CSI + to_string(count) + "A"; }
-        string down(const int &count = 1) { return CSI + to_string(count) + "B"; }
-        string forward(const int &count = 1) { return CSI + to_string(count) + "C"; }
-        string backward(const int &count = 1) { return CSI + to_string(count) + "D"; }
+        string up(const int& count = 1) { return CSI + to_string(count) + "A"; }
+        string down(const int& count = 1) { return CSI + to_string(count) + "B"; }
+        string forward(const int& count = 1) { return CSI + to_string(count) + "C"; }
+        string backward(const int& count = 1) { return CSI + to_string(count) + "D"; }
 
     }  // namespace cursor
 

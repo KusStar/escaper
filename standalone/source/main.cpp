@@ -22,9 +22,7 @@ int run() {
 
     int index = 0;
 
-    vector<string> fruits = {
-        "Apple", "Banana", "Orange"
-    };
+    vector<string> fruits = {"Apple", "Banana", "Orange"};
 
     for (;;) {
         for (int i = 0; i < fruits.size(); i++) {
@@ -41,12 +39,14 @@ int run() {
                     case KEY_UP_ARROW:
                     case KEY_LEFT_ARROW:
                         index -= 1;
-                        if (index < 0) index = 2;
+                        if (index < 0)
+                            index = 2;
                         break;
                     case KEY_DOWN_ARROW:
                     case KEY_RIGHT_ARROW:
                         index += 1;
-                        if (index > 2) index = 0;
+                        if (index > 2)
+                            index = 0;
                         break;
                 }
                 break;
@@ -56,7 +56,7 @@ int run() {
 }
 
 int main() {
-    int choice = 0; //default to 0
+    int choice = 0;  // default to 0
     auto timeout_exit = [&] {
         this_thread::sleep_for(chrono::seconds(2));
         cout << "Your choice is: " << choice + 1 << "\n";
