@@ -24,3 +24,5 @@ set_target_properties(escaper_standalone PROPERTIES
 )
 
 target_link_libraries(escaper_standalone escaper)
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")

@@ -1,7 +1,5 @@
 #include <iostream>
-#include <future>
 #include <thread>
-#include <chrono>
 #include <vector>
 
 #include "escaper.hpp"
@@ -33,7 +31,6 @@ int run() {
             string s = mark(index, i) + " " + fruits.at(i);
             cout << s << "\n";
         }
-        cout << "  Use arrow keys (↕) to move cursor" << "\n";
 
         int c = getch();
         switch (c) {
@@ -54,19 +51,19 @@ int run() {
                 }
                 break;
         }
-        cout << cursor::up(fruits.size() + 1);
+        cout << cursor::up(fruits.size());
     }
 }
 
 int main() {
-    chrono::seconds timeout(2);
-    cout << " What's your favorite?" << endl << flush;
     int choice = 0; //default to 0
-    future<int> future = async(run);
-    if (future.wait_for(timeout) == future_status::ready) {
-        choice = future.get();
-    }
-
-    cout << "Your choice is: " << choice + 1 << "\n";
-    exit(0);
+    auto timeout_exit = [&] {
+        this_thread::sleep_for(chrono::seconds(2));
+        cout << "Your choice is: " << choice + 1 << "\n";
+        exit(0);
+    };
+    thread t1(timeout_exit);
+    cout << " What's your favorite?" << endl << flush;
+    choice = run();
+    t1.join();
 }
