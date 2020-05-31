@@ -1,4 +1,8 @@
 #include <iostream>
+#include <future>
+#include <thread>
+#include <chrono>
+#include <vector>
 
 #include "escaper.hpp"
 
@@ -13,28 +17,28 @@ const char *RADIO_OFF = "◯";
 using namespace std;
 using namespace escaper;
 
-void run() {
+int run() {
     auto mark = [&](int current, int index) -> string {
         return current == index ? RADIO_ON : RADIO_OFF;
     };
 
     int index = 0;
 
-    for (;;) {
-        string s1 = mark(index, 0) + " " + "Apple";
-        string s2 = mark(index, 1) + " " + "Banana";
-        string s3 = mark(index, 2) + " " + "Orange";
+    vector<string> fruits = {
+        "Apple", "Banana", "Orange"
+    };
 
-        cout << s1 << "\n";
-        cout << s2 << "\n";
-        cout << s3 << "\n";
+    for (;;) {
+        for (int i = 0; i < fruits.size(); i++) {
+            string s = mark(index, i) + " " + fruits.at(i);
+            cout << s << "\n";
+        }
         cout << "  Use arrow keys (↕) to move cursor" << "\n";
 
         int c = getch();
         switch (c) {
             case KEY_ENTER:
-                cout << "Your choice is: " << index + 1 << "\n";
-                return;
+                return index;
             case KEY_SPEC:
                 switch (c = getch()) {
                     case KEY_UP_ARROW:
@@ -50,8 +54,19 @@ void run() {
                 }
                 break;
         }
-        cout << cursor::up(4);
+        cout << cursor::up(fruits.size() + 1);
     }
 }
 
-int main() { run(); }
+int main() {
+    chrono::seconds timeout(2);
+    cout << " What's your favorite?" << endl << flush;
+    int choice = 0; //default to 0
+    future<int> future = async(run);
+    if (future.wait_for(timeout) == future_status::ready) {
+        choice = future.get();
+    }
+
+    cout << "Your choice is: " << choice + 1 << "\n";
+    exit(0);
+}
