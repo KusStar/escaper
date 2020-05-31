@@ -16,7 +16,11 @@
 // Released: March 20, 2013
 // --------------------------------------------------------------------------------
 
-#define IS_WINDOWS (defined(WIN32) || defined(_WIN32) || defined(__WIN32))
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32)
+#define IS_WINDOWS 1
+#else
+#define IS_WINDOWS 0
+#endif
 
 #if IS_WINDOWS
 #include <Windows.h>
