@@ -75,22 +75,101 @@ int getch() {
 #endif
 
 namespace escaper {
+
     using namespace std;
-    static const string ESC = "\x1B";
-    static const string CSI = ESC + "[";
+    const string ESC = "\x1B";
+    const string CSI = ESC + "[";
+
+    namespace detail {
+
+        string repeat(string str, int count) {
+            if (count < 1)
+                return "";
+            if (count == 1)
+                return str;
+            if (count == 2)
+                return str + str;
+
+            string res;
+            int max = str.length() * count;
+
+            while (max > res.length() && count > 1) {
+                if (count & 1) {
+                    res += str;
+                }
+                count >>= 1;
+                str += str;
+            }
+            res += str;
+
+            return res;
+        }
+
+    }  // namespace detail
 
     namespace cursor {
-        static const string left = CSI + "G";
+
+        const string left = CSI + "G";
+        const string hide = CSI + "?25l";
+        const string show = CSI + "?25h";
+        const string save = ESC + "7";
+        const string restore = ESC + "8";
 
         string up(const int& count = 1) { return CSI + to_string(count) + "A"; }
-        string down(const int& count = 1) { return CSI + to_string(count) + "B"; }
-        string forward(const int& count = 1) { return CSI + to_string(count) + "C"; }
-        string backward(const int& count = 1) { return CSI + to_string(count) + "D"; }
+
+        string down(const int& count = 1) {
+            return CSI + to_string(count) + "B";
+        }
+
+        string forward(const int& count = 1) {
+            return CSI + to_string(count) + "C";
+        }
+
+        string backward(const int& count = 1) {
+            return CSI + to_string(count) + "D";
+        }
+
+        string next_line(const int& count = 1) {
+            return detail::repeat(CSI + "E", count);
+        }
+
+        string prev_line(const int& count = 1) {
+            return detail::repeat(CSI + "F", count);
+        }
 
     }  // namespace cursor
 
+    namespace scroll {
+
+        string up(const int& count = 1) {
+            return detail::repeat(CSI + "S", count);
+        }
+
+        string down(const int& count = 1) {
+            return detail::repeat(CSI + "T", count);
+        }
+
+    }  // namespace scroll
+
     namespace erase {
-        string line() { return CSI + "2K"; }
+
+        const string screen = CSI + "2J";
+        const string line = CSI + "2K";
+        const string line_start = CSI + "1K";
+        const string line_end = CSI + "K";
+
+        string up(const int& count = 1) {
+            return detail::repeat(CSI + "1J", count);
+        }
+
+        string down(const int& count = 1) {
+            return detail::repeat(CSI + "J", count);
+        }
+
+        string lines(const int& count = 1) {
+            return detail::repeat(line + cursor::up(), count);
+        }
+
     }  // namespace erase
 
 }  // namespace escaper
