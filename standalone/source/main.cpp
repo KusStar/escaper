@@ -15,7 +15,7 @@ const char *RADIO_OFF = "◯";
 using namespace std;
 using namespace escaper;
 
-int run() {
+string select() {
     auto mark = [&](int current, int index) -> string {
         return current == index ? RADIO_ON : RADIO_OFF;
     };
@@ -31,9 +31,10 @@ int run() {
         }
 
         int c = getch();
+
         switch (c) {
             case KEY_ENTER:
-                return index;
+                return fruits.at(index);
             case KEY_SPEC:
                 switch (c = getch()) {
                     case KEY_UP_ARROW:
@@ -56,14 +57,7 @@ int run() {
 }
 
 int main() {
-    int choice = 0;  // default to 0
-    auto timeout_exit = [&] {
-        this_thread::sleep_for(chrono::seconds(2));
-        cout << "Your choice is: " << choice + 1 << "\n";
-        exit(0);
-    };
-    thread t1(timeout_exit);
-    cout << " What's your favorite?" << endl << flush;
-    choice = run();
-    t1.join();
+    cout << "? What's your favorite?" << endl << flush;
+    auto choice = select();
+    cout << "Your choice is: " << choice << "\n";
 }
