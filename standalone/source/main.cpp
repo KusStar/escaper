@@ -1,5 +1,4 @@
 #include <iostream>
-#include <thread>
 #include <vector>
 
 #include "escaper.hpp"
@@ -52,7 +51,7 @@ string select() {
                 }
                 break;
         }
-        cout << cursor::up(fruits.size());
+        cout << erase::lines(fruits.size());
     }
 }
 
