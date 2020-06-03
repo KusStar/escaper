@@ -116,6 +116,31 @@ namespace escaper {
         const string save = ESC + "7";
         const string restore = ESC + "8";
 
+        string to(const int x, const int& y) {
+            if (y <= 0) {
+                return CSI + to_string(x + 1) + "G";
+            }
+            return CSI + to_string(y + 1) + ";" + to_string(x + 1) + "H";
+        }
+
+        string move(const int x, const int& y) {
+            string result;
+
+            if (x < 0) {
+                result += CSI + to_string(-x) + "D";
+            } else if (x > 0) {
+                result += CSI + to_string(x) + "C";
+            }
+
+            if (y < 0) {
+                result += CSI + to_string(-y) + "A";
+            } else if (y > 0) {
+                result += CSI + to_string(y) + "B";
+            }
+
+            return result;
+        }
+
         string up(const int& count = 1) { return CSI + to_string(count) + "A"; }
 
         string down(const int& count = 1) {
