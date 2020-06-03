@@ -51,6 +51,7 @@
 #define KEY_ESC 27
 #define KEY_DEL 51
 #define KEY_ENTER 10
+#define KEY_SPACE 32
 
 #if !IS_WINDOWS
 int getch() {
