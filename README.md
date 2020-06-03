@@ -85,6 +85,32 @@ int main() {
 }
 ```
 
+**Other**
+
+```cpp
+// check if env is on windows
+#define IS_WINDOWS
+// keyboard event code map
+#define KEY_SPEC
+#define KEY_CONNECTER
+#define KEY_BACKSPACE
+#define KEY_UP_ARROW
+#define KEY_DOWN_ARROW
+#define KEY_RIGHT_ARROW
+#define KEY_LEFT_ARROW
+#define KEY_TAB
+#define KEY_ESC
+#define KEY_DEL
+#define KEY_ENTER
+#define KEY_SPACE
+
+// in namespace
+using escaper::cursor;
+using escaper::scroll;
+using escaper::erase;
+using escaper::detail::repeat;
+```
+
 ## Thanks
 
 - [tinycon](https://sourceforge.net/projects/tinycon)
