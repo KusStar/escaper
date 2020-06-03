@@ -167,7 +167,7 @@ namespace escaper {
         }
 
         string lines(const int& count = 1) {
-            return detail::repeat(line + cursor::up(), count);
+            return detail::repeat(line + cursor::up(), count) + cursor::left;
         }
 
     }  // namespace erase
