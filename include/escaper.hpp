@@ -31,12 +31,13 @@
 #endif
 
 #if IS_WINDOWS
-#define KEY_SPEC -32
+#define KEY_SPEC 0
 #define KEY_BACKSPACE 8
 #define KEY_UP_ARROW 72
 #define KEY_DOWN_ARROW 80
 #define KEY_RIGHT_ARROW 77
 #define KEY_LEFT_ARROW 75
+#define KEY_ENTER 13
 #else
 #define KEY_SPEC 17
 #define KEY_CONNECTER 91
@@ -45,12 +46,12 @@
 #define KEY_DOWN_ARROW 66
 #define KEY_RIGHT_ARROW 67
 #define KEY_LEFT_ARROW 68
+#define KEY_ENTER 10
 #endif
 
 #define KEY_TAB 9
 #define KEY_ESC 27
 #define KEY_DEL 51
-#define KEY_ENTER 10
 #define KEY_SPACE 32
 
 #if !IS_WINDOWS
