@@ -77,13 +77,12 @@ int getch() {
 
 namespace escaper {
 
-    using namespace std;
-    const string ESC = "\x1B";
-    const string CSI = ESC + "[";
+    const std::string ESC = "\x1B";
+    const std::string CSI = ESC + "[";
 
     namespace detail {
 
-        string repeat(string str, int count) {
+        std::string repeat(std::string str, int count) {
             if (count < 1)
                 return "";
             if (count == 1)
@@ -91,7 +90,7 @@ namespace escaper {
             if (count == 2)
                 return str + str;
 
-            string res;
+            std::string res;
             int max = str.length() * count;
 
             while (max > res.length() && count > 1) {
@@ -110,56 +109,56 @@ namespace escaper {
 
     namespace cursor {
 
-        const string left = CSI + "G";
-        const string hide = CSI + "?25l";
-        const string show = CSI + "?25h";
-        const string save = ESC + "7";
-        const string restore = ESC + "8";
+        const std::string left = CSI + "G";
+        const std::string hide = CSI + "?25l";
+        const std::string show = CSI + "?25h";
+        const std::string save = ESC + "7";
+        const std::string restore = ESC + "8";
 
-        string to(const int x, const int& y) {
+        std::string to(const int x, const int& y) {
             if (y <= 0) {
-                return CSI + to_string(x + 1) + "G";
+                return CSI + std::to_string(x + 1) + "G";
             }
-            return CSI + to_string(y + 1) + ";" + to_string(x + 1) + "H";
+            return CSI + std::to_string(y + 1) + ";" + std::to_string(x + 1) + "H";
         }
 
-        string move(const int x, const int& y) {
-            string result;
+        std::string move(const int x, const int& y) {
+            std::string result;
 
             if (x < 0) {
-                result += CSI + to_string(-x) + "D";
+                result += CSI + std::to_string(-x) + "D";
             } else if (x > 0) {
-                result += CSI + to_string(x) + "C";
+                result += CSI + std::to_string(x) + "C";
             }
 
             if (y < 0) {
-                result += CSI + to_string(-y) + "A";
+                result += CSI + std::to_string(-y) + "A";
             } else if (y > 0) {
-                result += CSI + to_string(y) + "B";
+                result += CSI + std::to_string(y) + "B";
             }
 
             return result;
         }
 
-        string up(const int& count = 1) { return CSI + to_string(count) + "A"; }
+        std::string up(const int& count = 1) { return CSI + std::to_string(count) + "A"; }
 
-        string down(const int& count = 1) {
-            return CSI + to_string(count) + "B";
+        std::string down(const int& count = 1) {
+            return CSI + std::to_string(count) + "B";
         }
 
-        string forward(const int& count = 1) {
-            return CSI + to_string(count) + "C";
+        std::string forward(const int& count = 1) {
+            return CSI + std::to_string(count) + "C";
         }
 
-        string backward(const int& count = 1) {
-            return CSI + to_string(count) + "D";
+        std::string backward(const int& count = 1) {
+            return CSI + std::to_string(count) + "D";
         }
 
-        string next_line(const int& count = 1) {
+        std::string next_line(const int& count = 1) {
             return detail::repeat(CSI + "E", count);
         }
 
-        string prev_line(const int& count = 1) {
+        std::string prev_line(const int& count = 1) {
             return detail::repeat(CSI + "F", count);
         }
 
@@ -167,11 +166,11 @@ namespace escaper {
 
     namespace scroll {
 
-        string up(const int& count = 1) {
+        std::string up(const int& count = 1) {
             return detail::repeat(CSI + "S", count);
         }
 
-        string down(const int& count = 1) {
+        std::string down(const int& count = 1) {
             return detail::repeat(CSI + "T", count);
         }
 
@@ -179,20 +178,20 @@ namespace escaper {
 
     namespace erase {
 
-        const string screen = CSI + "2J";
-        const string line = CSI + "2K";
-        const string line_start = CSI + "1K";
-        const string line_end = CSI + "K";
+        const std::string screen = CSI + "2J";
+        const std::string line = CSI + "2K";
+        const std::string line_start = CSI + "1K";
+        const std::string line_end = CSI + "K";
 
-        string up(const int& count = 1) {
+        std::string up(const int& count = 1) {
             return detail::repeat(CSI + "1J", count);
         }
 
-        string down(const int& count = 1) {
+        std::string down(const int& count = 1) {
             return detail::repeat(CSI + "J", count);
         }
 
-        string lines(const int& count = 1) {
+        std::string lines(const int& count = 1) {
             return detail::repeat(line + cursor::up(), count) + cursor::left;
         }
 
