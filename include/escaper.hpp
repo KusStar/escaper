@@ -83,27 +83,24 @@ namespace escaper {
 
     namespace detail {
 
-        std::string repeat(std::string str, int count) {
-            if (count < 1)
-                return "";
-            if (count == 1)
+        static std::string repeat(std::string str, const std::size_t n) {
+            if (n == 0) {
+                str.clear();
+                str.shrink_to_fit();
                 return str;
-            if (count == 2)
-                return str + str;
-
-            std::string res;
-            int max = str.length() * count;
-
-            while (max > res.length() && count > 1) {
-                if (count & 1) {
-                    res += str;
-                }
-                count >>= 1;
-                str += str;
+            } else if (n == 1 || str.empty()) {
+                return str;
             }
-            res += str;
-
-            return res;
+            const auto period = str.size();
+            if (period == 1) {
+                str.append(n - 1, str.front());
+                return str;
+            }
+            str.reserve(period * n);
+            std::size_t m{2};
+            for (; m < n; m *= 2) str += str;
+            str.append(str.c_str(), (n - (m / 2)) * period);
+            return str;
         }
 
     }  // namespace detail
@@ -120,7 +117,8 @@ namespace escaper {
             if (y <= 0) {
                 return CSI + std::to_string(x + 1) + "G";
             }
-            return CSI + std::to_string(y + 1) + ";" + std::to_string(x + 1) + "H";
+            return CSI + std::to_string(y + 1) + ";" + std::to_string(x + 1) +
+                   "H";
         }
 
         std::string move(const int x, const int& y) {
@@ -141,7 +139,9 @@ namespace escaper {
             return result;
         }
 
-        std::string up(const int& count = 1) { return CSI + std::to_string(count) + "A"; }
+        std::string up(const int& count = 1) {
+            return CSI + std::to_string(count) + "A";
+        }
 
         std::string down(const int& count = 1) {
             return CSI + std::to_string(count) + "B";
